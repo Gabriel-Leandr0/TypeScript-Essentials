@@ -1,25 +1,3 @@
-//mexendo com nome
-
-let nome:string = 'Gabriel';
-
-// Selecione os elementos onde desejamos substituir o nome
-const elementosNome = document.querySelector(".topo.container-padding.flex .usuario.flex span") as HTMLElement;
-const saudacaoNome = document.querySelector(".block-saldo h2") as HTMLElement;
-
-// Atualize o texto dos elementos selecionados
-elementosNome.textContent = nome;
-saudacaoNome.textContent = `Olá, ${nome}! :)`;
-
-
-//mexendo com saldo
-let saldo:number = 10000;
-
-const elementoSaldo = document.querySelector(".cc .valor") as HTMLElement;
-elementoSaldo.textContent = saldo.toString();
-
-
-
-//mexendo no formulario
 const elementoFormulario = document.querySelector(".block-nova-transacao form") as HTMLFormElement;
 
 elementoFormulario.addEventListener("submit", function(event){
@@ -34,13 +12,13 @@ elementoFormulario.addEventListener("submit", function(event){
     const inpuValor = document.querySelector("#valor") as HTMLInputElement;
     const inputData = document.querySelector("#data") as HTMLInputElement;
 
-    let tipoTransacao:string = inputTipoTransacao.value;
+    let tipoTransacao: TipoTransacao = inputTipoTransacao.value as TipoTransacao;
     let valor:number = inpuValor.valueAsNumber;
     let data:Date = new Date(inputData.value);
 
-    if (tipoTransacao == 'Depósito'){
+    if (tipoTransacao === TipoTransacao.DEPOSITO){
         saldo += valor;
-    }else if (tipoTransacao == 'Transferência' || 'Pagamento de Boleto'){
+    }else if (tipoTransacao === TipoTransacao.PAGEMENTO_BOLETO || TipoTransacao.TRANSFERENCIA){
         saldo -= valor;
     } else{
 
@@ -48,9 +26,9 @@ elementoFormulario.addEventListener("submit", function(event){
         return;
     }
 
-    elementoSaldo.textContent = saldo.toString();
+    elementoSaldo.textContent = formatarMoeda(saldo);
 
-    const novaTransacao = {
+    const novaTransacao:Transacao = {
         tipoTransacao: tipoTransacao,
         valor: valor,
         data: data
